@@ -9,6 +9,7 @@ import Navbar from "./components/Navbar/Navbar";
 import Login from "./components/Login/Login";
 import Home from "./components/Home/Home";
 import PasswordSetting from "./components/PasswordSettings/PasswordSettings";
+import CoinTossGame from "./components/CoinTossGame/CoinTossGame";
 
 const App = () => {
   return (
@@ -30,6 +31,7 @@ const App = () => {
           <Route exact path="/" element={<Home />} />
           <Route exact path="/auth" element={<Login />} />
           <Route exact path="/password" element={<PasswordSetting />} />
+          <Route exact path="/games/cointoss" element={<CoinTossGame />} />
         </Routes>
       </Container>
     </BrowserRouter>

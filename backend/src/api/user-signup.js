@@ -16,10 +16,12 @@ const signup = async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 12);
+
     const result = await User.create({
       email,
       password: hashedPassword,
       name: `${firstName} ${lastName}`,
+      rewards: { tokens: 100 },
     });
     const token = jwt.sign(
       {

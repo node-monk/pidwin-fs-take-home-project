@@ -22,7 +22,14 @@ npm install
 Create a **.env file** and populate the fields.
 
 
-Now in the backend folder. Run the start
+Now in the backend folder. 
+
+## Start the Local Database
+```bash
+docker compose up
+```
+
+Run the start
    command
    ```bash
    npm run start

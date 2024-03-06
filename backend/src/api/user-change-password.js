@@ -34,6 +34,7 @@ const changePassword = async (req, res) => {
     res.status(200).json(updatePassword);
   } catch (error) {
     res.status(500).json({ message: "Something went wrong" });
+    console.error(error);
   }
 };
 

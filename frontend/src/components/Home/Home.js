@@ -3,7 +3,6 @@ import { Container, Grow, Paper, Typography } from "@mui/material";
 import { jwtDecode } from "jwt-decode";
 
 const Home = () => {
-
   const user = localStorage.getItem("profile")
     ? jwtDecode(JSON.parse(localStorage.getItem("profile")).token)
     : "null";

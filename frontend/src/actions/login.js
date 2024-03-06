@@ -16,17 +16,23 @@ export const signup = (formData, history) => async (dispatch) => {
 export const login = (formData, history) => async (dispatch) => {
   try {
     const { data } = await api.login(formData);
-    dispatch({ type: LOGIN, data });
-    history("/");
+    await dispatch({ type: LOGIN, data });
+    history("/games/cointoss");
     messages.success("Login Successful");
   } catch (error) {
     messages.error(error.response.data.message);
   }
 };
 
+export const logout = (formData, history) => async (dispatch) => {
+  dispatch({ type: LOGOUT, formData });
+  messages.success("Logout Successful");
+};
+
 export const changePassword = (formData, history) => async (dispatch) => {
   try {
     const { data } = await api.changePassword(formData);
+    localStorage.clear();
     dispatch({ type: LOGOUT, data });
     messages.success("Password Change Was Successful");
     history("/");
