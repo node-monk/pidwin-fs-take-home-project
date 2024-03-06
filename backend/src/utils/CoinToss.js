@@ -18,6 +18,7 @@ export class CoinTossGame {
   }
 
   async play(userChoice, autoSave = true) {
+    console.log("playing game ---->");
     if (
       !userChoice ||
       typeof userChoice !== "string" ||
@@ -33,11 +34,15 @@ export class CoinTossGame {
     }
 
     const cleanUserChoice = userChoice.toLowerCase();
-    const outcome =
-      cleanUserChoice === this.flipResult() ? WinLoss.win : WinLoss.loss;
+    const flipResult = this.flipResult();
+    const outcome = cleanUserChoice === flipResult ? WinLoss.win : WinLoss.loss;
+    console.log({ cleanUserChoice, flipResult, outcome });
+
     const tossResult = {
-      user: cleanUserChoice,
+      choice: cleanUserChoice,
+      compChoice: flipResult,
       outcome,
+      createdAt: Date.now(),
     };
 
     this.addTossOutcome(tossResult);

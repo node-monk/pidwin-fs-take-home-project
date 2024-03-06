@@ -48,6 +48,16 @@ export const styles = {
     transform: "rotateX(0)",
   },
 
+  coinBigText: {
+    fontSize: "2.4rem",
+    fontWeight: "bold",
+  },
+
+  coinSmallText: {
+    fontSize: "1.3rem",
+    fontWeight: "bold",
+  },
+
   isFlipping: {
     animation: "flipping 0.2s infinite",
     cursor: "wait",
@@ -69,6 +79,7 @@ export const styles = {
     outcome: {
       fontWeight: "bold",
       fontSize: "2.4rem",
+      textTransform: "uppercase",
     },
     payout: {
       fontWeight: "bold",

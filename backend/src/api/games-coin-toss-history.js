@@ -7,9 +7,11 @@ const history = async (req, res) => {
     const gameData = coinTossGame.gameData;
     const tosses = gameData.tosses || [];
     const returnTosses = tosses.map(
-      ({ outcome, payout }) => ({
+      ({ outcome, payout, compChoice, createdAt }) => ({
         outcome,
         payout,
+        compChoice,
+        createdAt,
       }),
       []
     );

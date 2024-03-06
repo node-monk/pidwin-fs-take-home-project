@@ -6,8 +6,8 @@ export const signup = (formData, history) => async (dispatch) => {
   try {
     const { data } = await api.signUp(formData);
     dispatch({ type: LOGIN, data });
-    history("/");
-    messages.success("Login Successful");
+    history("/games/cointoss");
+    messages.success("SignUp Successful");
   } catch (error) {
     messages.error(error.response.data.message);
   }

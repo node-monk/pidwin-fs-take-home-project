@@ -11,8 +11,11 @@ const gameCoinTossSchema = mongoose.Schema(
     tosses: [
       {
         choice: { type: String, required: true },
+        compChoice: { type: String, require: true },
         outcome: { type: String, required: true },
-        createdAt: { type: Number, default: Date.now },
+        startingTokens: { type: Number, required: true },
+        wager: { type: Number, required: true },
+        createdAt: { type: Number, required: true },
         payout: {
           amount: { type: Number },
           multiplier: {

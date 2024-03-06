@@ -10,11 +10,12 @@ const play = async (req, res) => {
     if (!user) {
       throw new Error("User not found");
     }
+    const startingTokens = user.rewards.tokens;
     user.rewards.tokens -= userWager;
 
     // Play Coin Toss
     const coinTossGame = new CoinTossGame(req.userId, 10);
-    const tossResults = await coinTossGame.play(userChoice, false);
+    await coinTossGame.play(userChoice, false);
     const payouts = new Payouts(5);
     const payoutResults = payouts.getPayoutAmount(
       userWager,
@@ -24,10 +25,21 @@ const play = async (req, res) => {
     user.rewards.tokens = user.rewards.tokens + payoutResults.amount;
 
     // update the last added toss record with payout information
+    const lastTossRecord = coinTossGame.gameData.tosses[0];
+
     const lastTossAdded = {
-      ...coinTossGame.gameData.tosses[0],
-      payout: payoutResults,
+      ...{
+        outcome: lastTossRecord.outcome,
+        createdAt: lastTossRecord.createdAt,
+        _id: lastTossRecord._id,
+        startingTokens,
+        choice: lastTossRecord.choice,
+        compChoice: lastTossRecord.compChoice,
+        wager: userWager,
+      },
+      ...{ payout: { ...payoutResults, tokens: user.rewards.tokens } },
     };
+
     coinTossGame.gameData.tosses[0] = lastTossAdded;
 
     await coinTossGame.saveGameData();

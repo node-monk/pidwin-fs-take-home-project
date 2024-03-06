@@ -8,8 +8,10 @@ import { keyframes } from "@emotion/react";
 import {
   Paper,
   Typography,
+  Container,
   FormControlLabel,
-  Input,
+  Divider,
+  TextField,
   RadioGroup,
   Radio,
   Button,
@@ -58,6 +60,10 @@ const CoinTossGame = () => {
         userWager: Number(gameState.wager),
       })
     );
+
+    /**
+     * Small Delay to show user coin flipping and help build suspense
+     */
     setTimeout(() => {
       setGameState({
         ...gameState,
@@ -95,7 +101,7 @@ const CoinTossGame = () => {
 
   let winlosses = [];
   winlosses = gameStats.winlosses.map((item) => (
-    <Grid container spacing={2}>
+    <Grid container spacing={2} key={item.createdAt}>
       <Grid item xs={4} md={4}>
         <Typography
           sx={[
@@ -125,58 +131,66 @@ const CoinTossGame = () => {
   // dispatch(coinTossWinLossRecord({}));
 
   useEffect(() => {
-    //if (!gameState.winlossesLoaded) {
     dispatch(coinTossWinLossRecord({}));
-    //setGameState({ ...gameState, winlossesLoaded: true });
-    //}
   }, [gameState, dispatch]);
-
-  const flipping = keyframes(styles["@keyframes flipping"]);
 
   const disablePlayButton = () => {
     return gameState.playStatus !== GAME_STATUSES.IDLE || !gameState.userChoice;
   };
+
+  const flipping = keyframes(styles["@keyframes flipping"]);
 
   return (
     <Grid container spacing={2}>
       <Grid item xs={6} md={6}>
         {gameState.playStatus === GAME_STATUSES.IDLE && (
           <Paper sx={{ p: 2 }}>
-            <Typography>Wager tokens in a game of coin toss</Typography>
-            <form onSubmit={handleFormSubmit}>
-              <Input
-                id="token-wager"
-                label="Wager Amount"
-                type="number"
-                value={gameState.wager}
-                onChange={handleChangeWager}
-              ></Input>
-              <RadioGroup
-                row
-                onChange={handleChangeSide}
-                value={gameState.userChoice}
-              >
-                <FormControlLabel
-                  label="Heads"
-                  value="heads"
-                  control={<Radio />}
-                ></FormControlLabel>
-                <FormControlLabel
-                  label="Tails"
-                  value="tails"
-                  control={<Radio />}
-                ></FormControlLabel>
-              </RadioGroup>
-              <Button
-                disabled={disablePlayButton()}
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="success"
-              >
-                PLAY
-              </Button>
-            </form>
+            <Typography variant="h5">WIN more tokens!!!</Typography>
+            <Divider sx={{ m: 2 }}></Divider>
+
+            <Container>
+              <form onSubmit={handleFormSubmit}>
+                <Grid container>
+                  <Grid item xs={6} md={6}>
+                    <TextField
+                      id="token-wager"
+                      label="Tokens to wager"
+                      type="number"
+                      value={gameState.wager}
+                      onChange={handleChangeWager}
+                    ></TextField>
+                  </Grid>
+                  <Grid item xs={6} md={6}>
+                    <RadioGroup
+                      row
+                      onChange={handleChangeSide}
+                      value={gameState.userChoice}
+                    >
+                      <FormControlLabel
+                        label="Heads"
+                        value="heads"
+                        control={<Radio />}
+                      ></FormControlLabel>
+                      <FormControlLabel
+                        label="Tails"
+                        value="tails"
+                        control={<Radio />}
+                      ></FormControlLabel>
+                    </RadioGroup>
+                  </Grid>
+                </Grid>
+                <Button
+                  disabled={disablePlayButton()}
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="success"
+                  sx={{ mt: 2 }}
+                >
+                  PLAY
+                </Button>
+              </form>
+            </Container>
           </Paper>
         )}
         {gameState.playStatus === GAME_STATUSES.FLIPPING && (
@@ -187,25 +201,62 @@ const CoinTossGame = () => {
                 { animation: `${flipping} 0.2s infinite`, cursor: "wait" },
               ]}
             >
-              <Box sx={[styles.coinSide, styles.heads]}>HEADS</Box>
-              <Box sx={[styles.coinSide, styles.tails]}>TAILS</Box>
+              <Box sx={[styles.coinSide, styles.heads]}>
+                <Typography sx={styles.coinBigText}>HEADS</Typography>
+              </Box>
+              <Box sx={[styles.coinSide, styles.tails]}>
+                <Typography sx={styles.coinBigText}>TAILS</Typography>
+              </Box>
             </Box>
           </Paper>
         )}
         {gameState.playStatus === GAME_STATUSES.RESULTS && (
           <Paper sx={[{ p: 2 }, styles.results.container]}>
             <Stack>
-              <Typography sx={styles.results.outcome}>
-                {gameStats.playResult.tossResult.outcome === "win"
-                  ? "you win!!"
-                  : "you lose!!"}
-              </Typography>
-
+              <Grid>
+                <Grid item>
+                  <Typography
+                    sx={[
+                      styles.results.outcome,
+                      gameStats.playResult.tossResult.outcome === "win"
+                        ? styles.winlosses.winner
+                        : styles.winlosses.loser,
+                    ]}
+                  >
+                    {gameStats.playResult.tossResult.outcome === "win"
+                      ? "you win!!"
+                      : "you lose!!"}
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <Box
+                    sx={{
+                      ...{ p: 2 },
+                      ...styles.coinContainer,
+                      ...{ width: "100px", height: "100px" },
+                    }}
+                  >
+                    <Box sx={[styles.coin]}>
+                      <Box
+                        sx={[
+                          styles.coinSide,
+                          styles.heads,
+                          { paddingTop: "50px" },
+                        ]}
+                      >
+                        <Typography sx={styles.coinSmallText}>
+                          {gameStats.playResult.tossResult.compChoice}
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </Box>
+                </Grid>
+              </Grid>
               <Typography sx={styles.results.message}>
                 {gameStats.playResult.tossResult.payout.multiplier.message}
               </Typography>
               <Typography sx={styles.results.payout}>
-                {gameStats.playResult.tossResult.payout.vector} Tokens
+                {gameStats.playResult.tossResult.payout.delta} Tokens
               </Typography>
 
               <Button
