@@ -20,7 +20,7 @@ npm install
 ## Backend
 Now in the backend folder. 
 
-For this Demo, I setup a local Docker mongo db. The .env
+For this Demo, I setup a local Docker mongoDB container. The .env
 file is already configured for the local instance that
 will be launched in Docker Composer.
 
