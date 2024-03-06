@@ -13,6 +13,15 @@ const gameCoinTossSchema = mongoose.Schema(
         choice: { type: String, required: true },
         outcome: { type: String, required: true },
         createdAt: { type: Number, default: Date.now },
+        payout: {
+          amount: { type: Number },
+          multiplier: {
+            size: { type: Number },
+            message: { type: String },
+          },
+          delta: { type: String },
+          tokens: { type: Number },
+        },
       },
     ],
   },

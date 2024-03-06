@@ -13,7 +13,7 @@ export class Payouts {
     const newAmount = wager * payoutMultiplier.size;
     return {
       amount: newAmount,
-      vector: payoutMultiplier.size === 0 ? `-${wager}` : `+${newAmount}`,
+      delta: payoutMultiplier.size === 0 ? `-${wager}` : `+${newAmount}`,
       multiplier: payoutMultiplier,
     };
   }

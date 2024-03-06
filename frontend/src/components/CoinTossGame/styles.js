@@ -61,4 +61,46 @@ export const styles = {
       transform: "rotateX(180deg)",
     },
   },
+
+  results: {
+    container: {
+      textAlign: "center",
+    },
+    outcome: {
+      fontWeight: "bold",
+      fontSize: "2.4rem",
+    },
+    payout: {
+      fontWeight: "bold",
+      fontSize: "1.6rem",
+    },
+    message: {
+      fontWeight: "bold",
+      fontSize: "1.2rem",
+    },
+  },
+
+  gameTokens: {
+    fontWeight: "bold",
+    fontSize: "4rem",
+    textAlign: "right",
+  },
+
+  prevResultsTitle: {
+    fontWeight: "bold",
+    fontSize: "1.2rem",
+  },
+
+  winlosses: {
+    winnerLoser: {
+      fontWeight: "bold",
+      textTransform: "uppercase",
+    },
+    winner: {
+      color: "green",
+    },
+    loser: {
+      color: "orange",
+    },
+  },
 };

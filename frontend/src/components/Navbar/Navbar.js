@@ -1,11 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { AppBar, Typography, Toolbar, Avatar, Button } from "@mui/material";
+import {
+  AppBar,
+  Typography,
+  Toolbar,
+  Avatar,
+  Button,
+  Chip,
+} from "@mui/material";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { jwtDecode } from "jwt-decode";
 import { styles } from "./styles";
 import { logout as logoutAction } from "../../actions/login";
 import { refreshRewards } from "../../actions/rewards";
+import { LogoutSharp, PasswordSharp } from "@mui/icons-material";
 
 const Navbar = () => {
   const [user, setUser] = useState(
@@ -57,27 +65,33 @@ const Navbar = () => {
       <Toolbar sx={styles.toolbar}>
         {user !== "null" && user !== null ? (
           <div sx={styles.profile}>
-            <Avatar sx={styles.purple} alt={user.name} src={user.picture}>
-              {user.name.charAt(0)}
-            </Avatar>
-
             <Typography sx={styles.userName} variant="h6">
-              {user.name} Tokens: ({rewards.tokens})
+              <span>{user.name}</span>
+              <Chip
+                avatar={<Avatar alt="tokens" src="/token25x25.png" />}
+                label={rewards.tokens}
+                variant="outlined"
+                sx={{ float: "right" }}
+              />
             </Typography>
             <Button
-              variant="contained"
+              variant="text"
               sx={styles.logout}
-              color="secondary"
+              color="primary"
               onClick={logout}
+              size="small"
+              startIcon={<LogoutSharp />}
             >
               Logout
             </Button>
             <Button
-              variant="contained"
-              color="secondary"
+              variant="text"
+              color="primary"
+              size="small"
               onClick={() => {
                 history("/password");
               }}
+              startIcon={<PasswordSharp />}
             >
               Set Password
             </Button>
@@ -88,6 +102,7 @@ const Navbar = () => {
             to="/auth"
             variant="contained"
             color="primary"
+            size="small"
           >
             Login
           </Button>

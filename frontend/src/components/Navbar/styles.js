@@ -29,6 +29,9 @@ export const styles = {
   userName: {
     display: "flex",
     alignItems: "center",
+    span: {
+      paddingRight: "1rem",
+    },
   },
   brandContainer: {
     display: "flex",

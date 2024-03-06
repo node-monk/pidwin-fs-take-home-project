@@ -6,8 +6,6 @@ import { coinTossWinLossRecord } from "../../actions/coin-toss.js";
 import { styles } from "./styles.js";
 import { keyframes } from "@emotion/react";
 import {
-  Container,
-  Grow,
   Paper,
   Typography,
   FormControlLabel,
@@ -18,6 +16,8 @@ import {
   Grid,
   Stack,
   Box,
+  Chip,
+  Avatar,
 } from "@mui/material";
 
 const CoinTossGame = () => {
@@ -94,16 +94,42 @@ const CoinTossGame = () => {
   };
 
   let winlosses = [];
-  winlosses = gameStats.winlosses.map((item) => <div>{item.outcome}</div>);
+  winlosses = gameStats.winlosses.map((item) => (
+    <Grid container spacing={2}>
+      <Grid item xs={4} md={4}>
+        <Typography
+          sx={[
+            styles.winlosses.winnerLoser,
+            item.outcome === "win"
+              ? styles.winlosses.winner
+              : styles.winlosses.loser,
+          ]}
+        >
+          {item.outcome === "win" ? "winner" : "loser"}
+        </Typography>
+      </Grid>
+      <Grid item xs={4} md={4}>
+        <span>{item.payout.multiplier.message}</span>
+      </Grid>
+      <Grid item xs={4} md={4}>
+        <Chip
+          avatar={<Avatar alt="tokens" src="/token25x25.png" />}
+          label={item.payout.delta}
+          variant="outlined"
+          sx={{ float: "right" }}
+        />
+      </Grid>
+    </Grid>
+  ));
 
   // dispatch(coinTossWinLossRecord({}));
 
   useEffect(() => {
-    if (!gameState.winlossesLoaded) {
-      dispatch(coinTossWinLossRecord({}));
-      setGameState({ ...gameState, winlossesLoaded: true });
-    }
-  });
+    //if (!gameState.winlossesLoaded) {
+    dispatch(coinTossWinLossRecord({}));
+    //setGameState({ ...gameState, winlossesLoaded: true });
+    //}
+  }, [gameState, dispatch]);
 
   const flipping = keyframes(styles["@keyframes flipping"]);
 
@@ -116,6 +142,7 @@ const CoinTossGame = () => {
       <Grid item xs={6} md={6}>
         {gameState.playStatus === GAME_STATUSES.IDLE && (
           <Paper sx={{ p: 2 }}>
+            <Typography>Wager tokens in a game of coin toss</Typography>
             <form onSubmit={handleFormSubmit}>
               <Input
                 id="token-wager"
@@ -145,7 +172,7 @@ const CoinTossGame = () => {
                 type="submit"
                 fullWidth
                 variant="contained"
-                color="primary"
+                color="success"
               >
                 PLAY
               </Button>
@@ -160,38 +187,46 @@ const CoinTossGame = () => {
                 { animation: `${flipping} 0.2s infinite`, cursor: "wait" },
               ]}
             >
-              <Box sx={[styles.coinSide, styles.heads]}>Heads</Box>
-              <Box sx={[styles.coinSide, styles.tails]}>Tails</Box>
+              <Box sx={[styles.coinSide, styles.heads]}>HEADS</Box>
+              <Box sx={[styles.coinSide, styles.tails]}>TAILS</Box>
             </Box>
           </Paper>
         )}
         {gameState.playStatus === GAME_STATUSES.RESULTS && (
-          <Paper>
-            <h2>
-              {" "}
-              {gameStats.playResult.tossResult.outcome === "win"
-                ? "you win!!"
-                : "you lose!!"}
-            </h2>
+          <Paper sx={[{ p: 2 }, styles.results.container]}>
+            <Stack>
+              <Typography sx={styles.results.outcome}>
+                {gameStats.playResult.tossResult.outcome === "win"
+                  ? "you win!!"
+                  : "you lose!!"}
+              </Typography>
 
-            <div>{gameStats.playResult.payout.multiplier.message}</div>
-            <div>{gameStats.playResult.payout.vector}</div>
+              <Typography sx={styles.results.message}>
+                {gameStats.playResult.tossResult.payout.multiplier.message}
+              </Typography>
+              <Typography sx={styles.results.payout}>
+                {gameStats.playResult.tossResult.payout.vector} Tokens
+              </Typography>
 
-            <Button
-              fullWidth
-              variant="contained"
-              color="primary"
-              onClick={handlePlayAgain}
-            >
-              PLAY AGAIN
-            </Button>
+              <Button
+                fullWidth
+                variant="contained"
+                color="primary"
+                onClick={handlePlayAgain}
+              >
+                PLAY AGAIN
+              </Button>
+            </Stack>
           </Paper>
         )}
       </Grid>
       <Grid item xs={6} md={6}>
         <Paper sx={{ p: 2 }}>
-          <h1>{rewards.tokens}</h1>
+          <Typography sx={styles.gameTokens}>
+            {rewards.tokens} <img src="/token43.png" alt="yellow token" />
+          </Typography>
           <hr />
+          <Typography sx={styles.prevResultsTitle}>Previous tosses</Typography>
           <Stack spacing={2}>{winlosses}</Stack>
         </Paper>
       </Grid>

@@ -17,7 +17,7 @@ export class CoinTossGame {
     this.historyLimit = historyLimit;
   }
 
-  async play(userChoice) {
+  async play(userChoice, autoSave = true) {
     if (
       !userChoice ||
       typeof userChoice !== "string" ||
@@ -39,8 +39,11 @@ export class CoinTossGame {
       user: cleanUserChoice,
       outcome,
     };
+
     this.addTossOutcome(tossResult);
-    this.saveGameData();
+    if (autoSave) {
+      this.saveGameData();
+    }
     return tossResult;
   }
 
